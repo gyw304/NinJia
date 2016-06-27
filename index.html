@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="GBK">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0">
+	<title>Phaser</title>
+    <style>
+        *{margin:0;padding:0}
+        html, body
+        {
+            -webkit-text-size-adjust:none;
+            overflow: hidden;
+            height:100%;
+            margin: 0px 0px 1px 0px;
+            background-color: #000
+        }
+        #cover{
+            position: absolute;
+            left:0;
+            top:0;
+            right:0;
+            bottom:0;
+            z-index: 2;
+            background-color: rgba(0,0,0,.8);
+            display: none;
+        }
+        #login{
+            width:15.775rem;
+            height:15.275rem;
+            background-image:url('assets/win.png');
+            background-size: 15.775rem 15.275rem;
+            position: absolute;
+            left:50%;
+            top:50%;
+            margin-left:-7.8875rem;
+            margin-top:-10rem;
+        }
+        #login input.ipt{
+            width:10.2rem;
+            height:1.5rem;
+            position: absolute;
+            border: 2px solid #7f2702;
+            color:#7f2702;
+            font-size:.7rem;
+            line-height: 1.3rem;
+            text-indent: .2rem;
+            background-color:#ffffff;
+            -webkit-border-radius: 10px
+        }
+        input::-webkit-input-placeholder {
+		    color: #7f2702;
+		}
+        #name{
+            left:2.7rem;
+            top:6.2rem;
+        }
+        #phone{
+            left:2.7rem;
+            top:8.5rem;
+        }
+        button#subBtn{
+            width:5.8rem;
+            height:2.45rem;
+            background-image:url('assets/sub_btn.png');
+            background-color: transparent;
+            background-size: 5.8rem 2.45rem;
+            position: absolute;
+            left:5rem;
+            top:11.2rem;
+            border: none;
+            font-size:.7rem;
+            color:#fff;
+        }
+        button#replayBtn{
+        	width:5.825rem;
+            height:2.45rem;
+            background-image:url('assets/replay-btn.png');
+            background-color: transparent;
+            background-size: 5.825rem 2.45rem;
+            position: absolute;
+            left:5rem;
+            top:17.2rem;
+            border: none;
+            font-size:.7rem;
+            color:#fff;
+        }
+    </style>
+    <script>
+    	(function(doc,win){var docEl=doc.documentElement,resizeEvt='orientationchange'in window?'orientationchange':'resize',recalc=function(){var clientWidth=docEl.clientWidth;if(!clientWidth)return;docEl.style.fontSize=20*(clientWidth/375)+'px'};if(!doc.addEventListener)return;win.addEventListener(resizeEvt,recalc,false);doc.addEventListener('DOMContentLoaded',recalc,false)})(document,window);
+    </script>
+    <script src="phaser.2.4.7.min.js"></script>
+    <script src="Boot.js"></script>
+    <script src="Preloader.js"></script>
+    <script src="UI.js"></script>
+    <script src="MainMenu.js"></script>
+    <script src="Game.js"></script>
+</head>
+<body>
+	<div id="game"></div>
+	<div id="cover">
+        <div id="login">
+        	<p style="text-align: center;color:#7f2702;font-size:1.4rem;padding-top:1.5rem">恭喜你！</p>
+        	<p style="padding:0 1rem;font-size:0.8rem;padding-top:.5rem;color:#7f2702">超过了5000米，获得一次抽奖的机会，请填写领奖信息！</p>
+            <div class="frm"><input type="text" id="name" class="ipt" placeholder="姓名"/></div>
+            <div class="frm"><input type="text" id="phone" class="ipt" placeholder="电话"/></div>
+            <button id="subBtn"></button>
+            
+            <button id="replayBtn"></button>
+            
+        </div>
+        
+   </div>
+<script>
+	
+	var config = {
+		baseUrl : 'assets/',
+		winScore : 100
+	}
+	
+	var user = {
+		score : 0,
+		ispoil : 0,
+		poil : '玛莎拉蒂一辆'
+	}
+	
+	document.getElementById('game').style.height = document.body.clientHeight + 'px';
+    var game = new Phaser.Game(750, 1206, Phaser.CANVAS, 'game');
+	    game.state.add('Boot', MyGame.Boot);
+	    game.state.add('Preloader', MyGame.Preloader);
+	    game.state.add('MainMenu', MyGame.MainMenu);
+	    game.state.add('Game', MyGame.Game);
+	    game.state.start('Boot');
+	
+	
+	document.getElementById('subBtn').addEventListener('touchend',function(){
+		document.getElementById('cover').style.display = 'none';
+		window.location.href = 'poil/html/index.html'
+	},false)
+	
+	document.getElementById('replayBtn').addEventListener('touchend',function(){
+		document.getElementById('cover').style.display = 'none';
+		game.state.start('Game')
+	},false)
+
+</script>
+<!--<script src="inpMusic.js"></script>-->
+</body>
+</html>

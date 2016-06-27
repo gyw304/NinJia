@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta content="telephone=no" name="format-detection" />
+	<meta content="email=no" name="format-detection" />
+	<meta name="full-screen" content="yes">
+	<meta name="browsermode" content="application">
+	<meta name="x5-orientation" content="portrait">
+	<meta name="x5-fullscreen" content="true">
+	<meta name="x5-page-mode" content="app">
+	<title>Document</title>
+	<script>
+		;(function(doc,win){var docEl = doc.documentElement,resizeEvt = 'orientationchange' in window ? 'orientationchange':'resize',recalc = function(){var clientWidth = docEl.clientWidth;if(!clientWidth) return;docEl.style.fontSize = 20 *(clientWidth / 320)+'px'};recalc();var tid;if(!doc.addEventListener) return;win.addEventListener(resizeEvt,function(){clearTimeout(tid);tid = setTimeout(recalc,300)},false)})(document,window);
+	</script>
+    <link rel="stylesheet" href="../css/main.css?55" type="text/css"/>
+    <script src='../js/loading_top.js'></script>
+</head>
+<body style="background-color: #ffac36">
+	<section class="g-head">
+		<img src="../images/banner-bg.jpg"  alt="banner图">
+	</section>
+	<section class="g-body">
+		<article class="m-gua" id="out-cav">
+			<div class="u-result-gua">恭喜你获得10000元购房券</div>
+			<div class="u-guaBox" id="u-guaBox">
+				<canvas id="cav-gua" class="cav-gua"></canvas>
+			</div>
+		</article>
+		<article class="m-gua-msg">
+			<p class="tipsWord-gua">今天还有<span class="num-gua" id="num-gua">1</span>次刮奖机会</p>
+			<a href="javascript:;" class="btn-record" style="background-color: #4488b2;color:#fff">中奖记录</a>
+		</article>
+		<article class="m-tips">
+			<h2 class="tit" style="background-color: #4488b2"><span class="word-inner" style="color:#fff">活动说明</span></h2>
+			<div class="word" style="background-color: #ffec4f;color:#5c320c">
+				请于xxxx内前往省建大厦B座7楼平台中心领取<br />
+联系电话025-86516365
+			</div>
+		</article>
+		<a href="../../index.html" style="height: 1.5rem;line-height: 1.5rem;color: #fff;padding: 0 0.75rem;background-color:#4488b2;font-size: 0.6rem;text-decoration: none; display: block;width:3rem;text-align: center;margin:0 auto">再来一次</a>
+		
+	</section>
+
+	<section class="g-pop">
+		<div class="u-flexBox u-bgPop">
+			<article class="m-inp-pop subPop">
+				<div class="inpBox">
+					<label for="" class="label-l">姓名</label>
+					<input type="text" class="inp">
+				</div>
+				<div class="inpBox">
+					<label for="" class="label-l">手机</label>
+					<input type="tel" class="inp">
+				</div>
+				<div class="outBox-submit">
+					<a href="javascript:;" class="btn-submit">提交</a>
+				</div>
+				<p class="tips">(请填写你的姓名和电话，仅作为获奖后的领奖凭证,如果没有提交信息奖品将会作废)</p>
+			</article>
+			<article class="m-gift-pop subPop">
+				<div class="u-flexBox">
+					<p class="word-gift">遮阳伞一把</p>
+				</div>
+				<a href="javascript:;" class="u-btn-close"><i class="ico-close">关闭</i></a>
+			</article>
+			<article class="m-timeUp subPop">
+				<div class="u-flexBox">
+					<p class="word-gift">次数已用完，请明天再来</p>
+				</div>
+			</article>
+		</div>
+	</section>
+	
+	<!-- 加载zepto.js -->
+	<script src="http://cdn.staticfile.org/zepto/1.0rc1/zepto.min.js"></script>
+	<script>window.Zepto || document.write('<scri'+'pt src="js/zepto.min.js"></scri'+'pt>')</script>
+	<script src="../js/TumoH.min.js"></script>
+	<script src='../js/loading_bottom.js'></script>
+	<script>
+		var num_tumo=1;//涂抹次数
+		var is_inped=false;//是否已经填写了信息
+
+
+		var popH={
+			showH:function(target){
+				$(".g-pop").show();
+				$(target).show();
+				setTimeout(function(){
+					$(".u-bgPop").addClass('showH');
+					$(target).addClass('showH');
+				},50)
+				
+			},
+			hideH:function(target){
+				$(".u-bgPop").removeClass('showH');
+				$(target).removeClass('showH');
+				setTimeout(function(){
+					$(".g-pop").hide();
+					$(target).hide();
+				},450);
+			}
+		};
+
+		function init(){
+			$("#num-gua").html(num_tumo);
+			if(num_tumo<1){
+				var target=$(".m-timeUp")
+				popH.showH(target);
+			}
+		}
+		init();
+		
+		$(".g-pop").on("touchmove",function(event){
+			event.preventDefault();
+		})
+		$(".u-btn-close").on("touchend",function(event){
+			event.stopPropagation();
+			var target=$(this).parent();
+			popH.hideH(target);
+		})
+		$(".m-inp-pop .btn-submit").on("touchend",function(event){
+			event.stopPropagation();
+			$(".m-inp-pop input").blur();
+			//需要验证,验证成功
+			$(this).hide();
+			//ajax提交数据成功后(开定时器模拟)
+			setTimeout(function(){
+				var target=$(".m-inp-pop");
+				popH.hideH(target);
+			},1000)
+			
+		})
+		$(".m-gua-msg .btn-record").on("touchend",function(event){
+			event.stopPropagation();
+			var target=$(".m-gift-pop");
+			popH.showH(target);
+		})
+
+		//涂抹
+		function finish_tumo(){
+			$("#out-cav").addClass('done');
+ 			setTimeout(function(){
+ 				$("#cav-gua").hide();
+ 				$("#num-gua").html(--num_tumo);
+ 				//弹出填写信息框
+ 				/*if(!is_inped){
+ 					var target=$(".m-inp-pop");
+					popH.showH(target);
+ 				}*/
+ 			},450);			
+		}
+		var ox=$("#u-guaBox").offset().left;
+		var oy=$("#u-guaBox").offset().top;
+		window.addEventListener('load',function(){
+			TumoH({
+		  		cavId:'cav-gua',					//canvas的id(string)
+		 		oR:40,							//涂抹半径大小(number)
+		 		ImgSRC:'../images/gua-upImg.gif',	//涂抹的图片地址src(string)
+		 		callBack:function(){					//涂抹达到比例后执行的函数(function)
+		 			finish_tumo();
+		 		},				
+		 		maxPro:0.1							//涂抹比例(number)
+			 })
+		})
+	 	
+	</script>
+</body>
+</html>
